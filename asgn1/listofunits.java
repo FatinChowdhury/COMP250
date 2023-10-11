@@ -8,15 +8,9 @@ public class ListOfUnits {
 /* A constructor that takes no inputs and creates an empty list of units. To do so, the
 fields should be initialized to reflect the fact that at the moment there are no units in
 the list. */
-	public String[] getList() {
-		// incomplete
-		for (int i=0; i<=size; i++) {
-			if (ListOfUnits[i] == null) {
-				size++;
-			}
-		}
-		
-		return ListOfUnits;
+	public ListOfUnits() { 
+		String[] ListOfUnits = new String[10]; // we can adjust this later
+		size = 0; // everything is null
 	}
 	
 /* A getSize() method that takes no inputs and returns the number of units that are part
@@ -33,7 +27,12 @@ and it should not contain any null elements. */
 	
 	public String[] getList() {
 		// incomplete
-		if 
+		for (int i=0; i<=size; i++) {
+			if (ListOfUnits[i] == null) {
+				size++;
+			}
+		}
+		
 		return ListOfUnits;
 	}
 	
@@ -42,9 +41,14 @@ at the specified position in this list. If the integer received is out of range,
 or greater than or equal to the number of units in the list, then the method should throw
 an IndexOutOfBoundsException. */
 	
-	public int getUnit(int numberUnits) {
+	public String getUnit(int i, String e) {
 		// incomplete
-		return 0;
+		if (i >=0 && i <= size) {
+			return ListOfUnits[i];
+		}
+		else {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 	
 	
@@ -58,6 +62,7 @@ adding the new one. */
 	
 	public void addUnit(int Unit) {
 		// incomplete
+		
 	}
 	
 /* An indexOf() method which takes as input a Unit and returns an int indicating the
@@ -91,5 +96,6 @@ array returned by the method should not contain any null elements. */
 		// incomplete
 		return;
 	}
-
+	
+	
 }
