@@ -41,7 +41,7 @@ at the specified position in this list. If the integer received is out of range,
 or greater than or equal to the number of units in the list, then the method should throw
 an IndexOutOfBoundsException. */
 	
-	public String getUnit(int i, String e) {
+	public String getUnit(int i, String ref) {
 		// incomplete
 		if (i >=0 && i <= size) {
 			return ListOfUnits[i];
@@ -60,9 +60,19 @@ If need be, this is a great place to create your own private method to help you 
 implementation. Warning: make sure that no unit is removed from the list as a result of
 adding the new one. */
 	
-	public void addUnit(int Unit) {
+	public void addUnit(String Unit) {
 		// incomplete
-		
+		if (ListOfUnits.length == size) {fixList();}
+			ListOfUnits[size] = Unit;
+			size++;
+	}
+	
+	private void fixList() {
+		String[] bigger = new String[ListOfUnits.length*2];
+		for(int i=0; i < size; i++) {
+			bigger[i] = ListOfUnits[i];
+		}
+		ListOfUnits = bigger; 
 	}
 	
 /* An indexOf() method which takes as input a Unit and returns an int indicating the
@@ -70,10 +80,18 @@ position of the first occurrence of the specified element in this list. If no su
 then the method returns −1. Remember that when comparing reference types you do
 not want to use ‘==’. */
 	
-	public int indexOf() {
+	public int indexOf(String Unit) {
 		// incomplete
-		return -1;
+		for (int position = 0; position < size; position++) {
+			if (ListOfUnits[position] = Unit) 
+				return position;
+			else
+				return -1;
+		}
 	}
+			
+		
+	
 	
 /*A removeUnit() method which takes as input a Unit and returns a boolean. The
 method removes the first occurrence of the specified element from the array of units of
