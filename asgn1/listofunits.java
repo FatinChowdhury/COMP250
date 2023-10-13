@@ -17,7 +17,7 @@ the list. */
 of this list. */
 	
 	public int getSize() {
-		return size;
+		return size-1;
 	}
 
 /*A getList() method which takes no inputs and returns an array containing all the units
@@ -62,11 +62,18 @@ adding the new one. */
 	
 	public void addUnit(String Unit) {
 		// incomplete
-		if (ListOfUnits.length == size) {fixList();}
+		if (size == 0) {
+			throw new IllegalArgumentException();
+		}
+		
+		else if (ListOfUnits.length == size && size > 0) {
+			fixList();
+		}
 			ListOfUnits[size] = Unit;
 			size++;
 	}
 	
+	// creating my own private method
 	private void fixList() {
 		String[] bigger = new String[ListOfUnits.length*2];
 		for(int i=0; i < size; i++) {
@@ -82,16 +89,14 @@ not want to use ‘==’. */
 	
 	public int indexOf(String Unit) {
 		// incomplete
-		for (int position = 0; position < size; position++) {
-			if (ListOfUnits[position] = Unit) 
+		for (int position = 0; position < size; position++) { 
+			if (size == 0)
+				throw new IllegalArgumentException();
+			else if (ListOfUnits[position].equals(Unit)) // this line: i used ChatGPT & the rest, no
 				return position;
-			else
-				return -1;
 		}
+		return -1;
 	}
-			
-		
-	
 	
 /*A removeUnit() method which takes as input a Unit and returns a boolean. The
 method removes the first occurrence of the specified element from the array of units of
@@ -100,19 +105,36 @@ it, the method returns true. Note that this method removes a unit from the list 
 only if such unit is equal to the input received. For example, it is not possible to remove
 an Aztec settler in place of a Sumerian settler. */
 	
-	public boolean removeUnit() {
-		// incomplete
-		return true;
+	public boolean removeUnit(String Unit) {
+		for(int position = 0; position < size; position++) {
+			
+			if (size == 0){
+				throw new IllegalArgumentException();
+			}
+			
+			else if (ListOfUnits[position].equals(Unit)) {
+				for (int positionShifted = position; positionShifted < size - 1;
+						positionShifted++) {
+					ListOfUnits[positionShifted] = ListOfUnits[positionShifted + 1];
+				}
+				ListOfUnits[size - 1] = null;
+				size--;
+				return true;
+			}
+		}
+		return false;
 	}
+	
 	
 /* A getArmy() method that takes no inputs and returns an array of MilitaryUnits. The
 array should contain all MilitaryUnits that are part of this list. Note that not all units
 in the list are military units. A ListOfUnits may include also setters and workers. The
 array returned by the method should not contain any null elements. */
 	
-	public getArmy() {
+	public String[] getArmy() {
 		// incomplete
-		return;
+		String[] MilitaryUnits = new String[10];
+		return MilitaryUnits;
 	}
 	
 	
