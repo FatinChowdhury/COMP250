@@ -11,16 +11,16 @@ abstract class Unit {
 		
 	}
 	
-	public final void getPosition() { // to modify void later?
-		
+	public final getPosition() { // to modify void later?
+		return Tile;
 	}
 	
-	public final void getHP() { // to modify void later?
-	
+	public final double getHP() { // to modify void later?
+		return hp;
 	}
 	
-	public final void getFaction() { // to modify void later?
-		
+	public final String getFaction() { // to modify void later?
+		return faction;
 	}
 	
 	class Settler{	// might have to do extend Unit at Settler.java
