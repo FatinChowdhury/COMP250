@@ -9,7 +9,7 @@ public class ListOfUnits {
 fields should be initialized to reflect the fact that at the moment there are no units in
 the list. */
 	public ListOfUnits() { 
-		String[] ListOfUnits = new String[10]; // we can adjust this later
+		ListOfUnits = new String[10]; // we can adjust this later
 		size = 0; // everything is null
 	}
 	
@@ -17,7 +17,7 @@ the list. */
 of this list. */
 	
 	public int getSize() {
-		return size-1;
+		return size;
 	}
 
 /*A getList() method which takes no inputs and returns an array containing all the units
@@ -27,6 +27,7 @@ and it should not contain any null elements. */
 	
 	public String[] getList() {
 		// incomplete
+		ListOfUnits = new String[size];
 		for (int i=0; i<=size; i++) {
 			if (ListOfUnits[i] == null) {
 				size++;
@@ -41,9 +42,9 @@ at the specified position in this list. If the integer received is out of range,
 or greater than or equal to the number of units in the list, then the method should throw
 an IndexOutOfBoundsException. */
 	
-	public String getUnit(int i, String ref) {
+	public String getUnit(int i) {
 		// incomplete
-		if (i >=0 && i <= size) {
+		if (i >=0 && i < size) {
 			return ListOfUnits[i];
 		}
 		else {
@@ -62,11 +63,11 @@ adding the new one. */
 	
 	public void addUnit(String Unit) {
 		// incomplete
-		if (size == 0) {
+		if (Unit == null) {
 			throw new IllegalArgumentException();
 		}
 		
-		else if (ListOfUnits.length == size && size > 0) {
+		else if (ListOfUnits.length == size) {
 			fixList();
 		}
 			ListOfUnits[size] = Unit;
@@ -89,11 +90,15 @@ not want to use ‘==’. */
 	
 	public int indexOf(String Unit) {
 		// incomplete
+		if (size == 0)
+			throw new IllegalArgumentException();
 		for (int position = 0; position < size; position++) { 
-			if (size == 0)
-				throw new IllegalArgumentException();
-			else if (ListOfUnits[position].equals(Unit)) // this line: i used ChatGPT & the rest, no
+			if (ListOfUnits[position] == null) {
+				throw new NullPointerException();
+			}
+			else if (ListOfUnits[position].equals(Unit)) { // i love ed discussions lol
 				return position;
+			}
 		}
 		return -1;
 	}
@@ -106,15 +111,19 @@ only if such unit is equal to the input received. For example, it is not possibl
 an Aztec settler in place of a Sumerian settler. */
 	
 	public boolean removeUnit(String Unit) {
+		if (size == 0)
+			throw new IllegalArgumentException();
+		
 		for(int position = 0; position < size; position++) {
-			
-			if (size == 0){
-				throw new IllegalArgumentException();
+			if (ListOfUnits[position] == null) {
+				throw new NullPointerException();
 			}
 			
 			else if (ListOfUnits[position].equals(Unit)) {
+				
 				for (int positionShifted = position; positionShifted < size - 1;
 						positionShifted++) {
+					
 					ListOfUnits[positionShifted] = ListOfUnits[positionShifted + 1];
 				}
 				ListOfUnits[size - 1] = null;
@@ -132,8 +141,23 @@ in the list are military units. A ListOfUnits may include also setters and worke
 array returned by the method should not contain any null elements. */
 	
 	public String[] getArmy() {
-		// incomplete
-		String[] MilitaryUnits = new String[10];
+		int sizeMilitary = 0;
+		for (int position = 0; position < size; position++) {
+			if (ListOfUnits[position] != null) {
+				sizeMilitary++;
+			}
+		}
+		
+		String[] MilitaryUnits = new String[sizeMilitary];
+		int positionMilitary = 0;
+		
+		for (int position = 0; position < size; position++) {
+			
+			if (ListOfUnits[position] != null) {
+				MilitaryUnits[positionMilitary] = ListOfUnits[position];
+				positionMilitary++;
+			}
+		}
 		return MilitaryUnits;
 	}
 	
