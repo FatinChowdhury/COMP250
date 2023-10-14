@@ -81,10 +81,23 @@ list, false otherwise.*/
 	}
 	
 	String[] updatedListOfUnits = new String[ListOfUnits.length + 1];
-	
-	
+	System.arraycopy(ListOfUnits, 0, updatedListOfUnits, 0, ListOfUnits.length);
+        updatedListOfUnits[ListOfUnits.length] = unit;
+        ListOfUnits = updatedListOfUnits;
+        return true;
 }
 
+	private boolean isMilitaryUnit(String unit) {
+        // Add your logic to determine if the unit is a military unit
+        // For example, you can check if the unit belongs to a specific class or has certain properties
+        	return false;
+   	}
+
+    	private boolean hasEnemyMilitaryUnit() {
+        	// Add your logic to check if there is an enemy military unit on the tile
+        	// You can iterate over the ListOfUnits and check if any military unit belongs to the enemy faction
+        	return false;
+   	}
 /* A removeUnit() method which takes as input a unit and removes it from the tile’s
 ListOfUnits. The method should also return a boolean indicating whether or not the
 operation was successful.*/
