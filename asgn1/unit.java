@@ -8,9 +8,9 @@ abstract class Unit {
 	
 	public Unit(Tile position, double hp, int movingRange, String faction) {
 		this.position = position;
-        this.hp = hp;
-        this.movingRange = movingRange;
-        this.faction = faction;
+        	this.hp = hp;
+        	this.movingRange = movingRange;
+        	this.faction = faction;
 	}
 	
 	
