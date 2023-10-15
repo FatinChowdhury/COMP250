@@ -1,7 +1,17 @@
-class Worker extends Unit {	// might have to do extend Unit at Worker.java
-		private int jobsPerformed;
-		public Worker(Tile, double hp, String faction){
-			int movingRange = 2;
-			int jobsPerformed = 0;
-		}
-	}
+package Assignment1;
+
+class Worker extends Unit {
+    private int jobsPerformed;
+
+    public Worker(Tile position, double hp, String faction) {
+        super(position, hp, 2, faction);
+        this.jobsPerformed = 0;
+    }
+    private int getJobsPerformed() { 
+        return jobsPerformed;
+    }
+
+    private void performJob() {
+        jobsPerformed++;
+    }
+}
