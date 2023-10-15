@@ -142,6 +142,7 @@ array returned by the method should not contain any null elements. */
 	
 	public String[] getArmy() {
 		int sizeMilitary = 0;
+		
 		for (int position = 0; position < size; position++) {
 			if (ListOfUnits[position] != null) {
 				sizeMilitary++;
