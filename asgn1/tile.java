@@ -11,7 +11,7 @@ public class Tile {
 	private int y;
 	private boolean cityBuilt;
 	private boolean tileImproved;
-	private String[] ListOfUnits2; // what
+	private Unit[] ListOfUnits;
 	
 /*The class must also have the following public methods:
 – A constructor that takes as input two ints indicating the x and the y coordinate respectively. The constructor creates a Tile with the specified coordinates. A new tile is not a
@@ -23,7 +23,7 @@ initializing its corresponding field with an empty ListOfUnits. */
 		this.y = y;
 		this.cityBuilt = false;
 		this.tileImproved = false;
-		this.ListOfUnits2 = new String[0];
+		this.ListOfUnits = new Unit[0];
 	}
 /*A getX() and a getY() method which return the x and the y coordinate of the tile
 respectively.*/
@@ -72,50 +72,80 @@ different faction (the enemies’ army!) is stationed here. Non-military units c
 be added to the tile. The method returns true if the unit was successfully added to the
 list, false otherwise.*/
 	
-	public boolean addUnit(String Unit) {
-		if (isMilitaryUnit(unit)) {
-			if (hasMilitaryUnitExists(Unit)) {
-				return false;
+	public boolean addUnit(Unit Unit) {
+		if (Unit instanceof MilitaryUnit) {
+			for (int position = 0; position<ListOfUnits.length; position++) {
+				if (ListOfUnits[position] instanceof MilitaryUnit &&
+						!ListOfUnits[position].getFaction().equals(Unit.getFaction())){
+					return false; // I used ChatGPT for the 2nd condition of this if statement
+				}
 			}
 		}
+		
+		for (int position = 0; position < ListOfUnits.length; position++) {
+			if (ListOfUnits[position] == null) {
+				ListOfUnits[position] = Unit;
+				return true;
+			}
+		}
+		return false;
 	}
+
 	
-	String[] updatedListOfUnits = new String[ListOfUnits.length + 1];
-	System.arraycopy(ListOfUnits, 0, updatedListOfUnits, 0, ListOfUnits.length);
-        updatedListOfUnits[ListOfUnits.length] = unit;
-        ListOfUnits = updatedListOfUnits;
-        return true;
-}
 
-	private boolean isMilitaryUnit(String unit) {
-        // Add your logic to determine if the unit is a military unit
-        // For example, you can check if the unit belongs to a specific class or has certain properties
-        	return false;
-   	}
 
-    	private boolean hasEnemyMilitaryUnit() {
-        	// Add your logic to check if there is an enemy military unit on the tile
-        	// You can iterate over the ListOfUnits and check if any military unit belongs to the enemy faction
-        	return false;
-   	}
 /* A removeUnit() method which takes as input a unit and removes it from the tile’s
 ListOfUnits. The method should also return a boolean indicating whether or not the
 operation was successful.*/
 	
+	public boolean removeUnit(Unit Unit) {
+		for (int position = 0; position < ListOfUnits.length; position++) {
+			if (ListOfUnits[position] == Unit) {
+				ListOfUnits[position] = null;
+				return true; // actually removes the unit
+			}
+		}
+		return false; // or else it wont
+	}
 
+/*A selectWeakEnemy() method which takes as input a String representing a faction.
+The method should return the reference of the enemy unit (i.e. any Unit with a faction
+different than the one specified) stationed on the tile with the lowest health. If no enemy
+unit is present, then the method returns null. If more than one enemy unit has the
+lowest health, then the one that appears first in the list should be returned.
+*/
+	public Unit selectWeakEnemy(String faction) {
+		Unit weakestEnemy = null;
+		
+		for (int position = 0; position < ListOfUnits.length; position++) {
+			Unit Unit = ListOfUnits[position];
+			if (!Unit.getFaction().equals(faction)) {
+				if (weakestEnemy == null || Unit.getHP() < weakestEnemy.getHP()) {
+					weakestEnemy = Unit;
+				}
+			}
+		}
+		return weakestEnemy;
+	}
 
-
-
-/*A removeUnit() method which takes as input a unit and removes it from the tile’s
-ListOfUnits. The method should also return a boolean indicating whether or not the
-operation was successful.*/
-
-
-
-
+	
 /*A static method called getDistance() which takes as input two tiles and returns a
 double indicating the distance between the two. Remember that given two points (x1, y1)
 and (x2, y2), the distance can be computed with the following formula:
 distance = ((x1 - x2)^2  +  (y1-y2)^2 )^0.5. */
+	
+	public static double getDistance(Tile tile1, Tile tile2) {
+		int x1 = Math.abs(tile1.getX());
+		int x2 = Math.abs(tile2.getX());
+	    int y1 = Math.abs(tile1.getY());
+	    int y2 = Math.abs(tile2.getY());
+        double distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+        return distance;
+	}
+	
+	
+	
+	
+}
 
 
