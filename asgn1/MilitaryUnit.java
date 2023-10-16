@@ -1,4 +1,4 @@
-package Assignment1;
+package assignment1;
 
 abstract class MilitaryUnit extends Unit {
     private double attackDamage;
@@ -12,4 +12,25 @@ abstract class MilitaryUnit extends Unit {
     	this.attackRange = attackRange;
     	this.armor = armor;
     }
+    
+    public void takeAction(Tile targetTile) {
+        if (getPosition().getDistance(targetTile, this.getPosition()) > attackRange) {
+            return;
+        }
+        
+        Unit weakestEnemy = targetTile.selectWeakEnemy(this.getFaction());
+        if (weakestEnemy != null) {
+            double damage = this.attackDamage;
+            if (getPosition().isImproved()) {
+                damage *= 1.05;
+            }
+            weakestEnemy.receiveDamage(damage);
+        }
+    }
+    public void receiveDamage(double damageReceived) {
+        double armorMultiplier = 100.0 / (100.0 + this.armor);
+        damageReceived *= armorMultiplier;
+        super.receiveDamage(damageReceived);
+    }
+    
 }
