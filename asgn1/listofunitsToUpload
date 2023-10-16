@@ -1,11 +1,11 @@
-package Assignment1;
+package assignment1;
 
 public class ListOfUnits {
-	private String[] ListOfUnits;
+	private Unit[] ListOfUnits;
 	private int size;
 	
 	public ListOfUnits() { 
-		ListOfUnits = new String[10];
+		ListOfUnits = new Unit[10];
 		size = 0;
 	}
 	
@@ -13,9 +13,8 @@ public class ListOfUnits {
 		return size;
 	}
 
-	public String[] getList() {
-		// incomplete
-		ListOfUnits = new String[size];
+	public Unit[] getList() {
+		ListOfUnits = new Unit[size];
 		for (int i=0; i<=size; i++) {
 			if (ListOfUnits[i] == null) {
 				size++;
@@ -26,8 +25,7 @@ public class ListOfUnits {
 	}
 	
 	
-	public String getUnit(int i) {
-		// incomplete
+	public Unit getUnit(int i) {
 		if (i >=0 && i < size) {
 			return ListOfUnits[i];
 		}
@@ -36,7 +34,7 @@ public class ListOfUnits {
 		}
 	}
 	
-	public void addUnit(String Unit) {
+	public void addUnit(Unit Unit) {
 		if (Unit == null) {
 			throw new IllegalArgumentException();
 		}
@@ -50,14 +48,14 @@ public class ListOfUnits {
 	
 	// creating my own private method
 	private void fixList() {
-		String[] bigger = new String[ListOfUnits.length*2];
-		for(int i=0; i < size; i++) {
-			bigger[i] = ListOfUnits[i];
+		Unit[] bigger = new Unit[ListOfUnits.length*2];
+		for(int position=0; position < size; position++) {
+			bigger[position] = ListOfUnits[position];
 		}
 		ListOfUnits = bigger; 
 	}
 	
-	public int indexOf(String Unit) {
+	public int indexOf(Unit Unit) {
 		if (size == 0)
 			throw new IllegalArgumentException();
 		for (int position = 0; position < size; position++) { 
@@ -71,7 +69,7 @@ public class ListOfUnits {
 		return -1;
 	}
 	
-	public boolean removeUnit(String Unit) {
+	public boolean removeUnit(Unit Unit) {
 		if (size == 0)
 			throw new IllegalArgumentException();
 		
@@ -95,7 +93,7 @@ public class ListOfUnits {
 		return false;
 	}
 	
-	public String[] getArmy() {
+	public Unit[] getArmy() {
 		int sizeMilitary = 0;
 		
 		for (int position = 0; position < size; position++) {
@@ -104,7 +102,7 @@ public class ListOfUnits {
 			}
 		}
 		
-		String[] MilitaryUnits = new String[sizeMilitary];
+		Unit[] MilitaryUnits = new Unit[sizeMilitary];
 		int positionMilitary = 0;
 		
 		for (int position = 0; position < size; position++) {
