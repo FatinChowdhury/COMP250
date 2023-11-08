@@ -1,0 +1,166 @@
+package assignment2;
+
+import java.awt.Color;
+import java.util.Random;
+import java.util.Stack;
+
+import assignment2.food.*;
+
+
+public class Caterpillar {
+    // All the fields have been declared public for testing purposes
+    public Segment head;
+    public Segment tail;
+    public int length;
+    public EvolutionStage stage;
+
+    public Stack<Position> positionsPreviouslyOccupied;
+    public int goal;
+    public int turnsNeededToDigest;
+
+
+    public static Random randNumGenerator = new Random(1);
+
+
+    // Creates a Caterpillar with one Segment. It is up to students to decide how to implement this.
+    public Caterpillar(Position p, Color c, int goal) {
+
+        Segment newSegment = new Segment(p,c);
+        this.head = newSegment;
+        this.tail = newSegment;
+        this.goal = goal;
+
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+    public EvolutionStage getEvolutionStage() {
+        return this.stage;
+    }
+
+    public Position getHeadPosition() {
+        return this.head.position;
+    }
+
+    public int getLength() {
+        return this.length;
+    }
+
+
+    // returns the color of the segment in position p. Returns null if such segment does not exist
+    public Color getSegmentColor(Position p) {
+
+        Segment currentSegment = this.head;
+        while (currentSegment != null){
+            if (currentSegment.position.equals(p)){
+                return currentSegment.color;
+            }
+            currentSegment = currentSegment.next;
+        }
+
+        return null;
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+
+    // shift all Segments to the previous Position while maintaining the old color
+    public void move(Position p) {
+        Segment newSegment = new Segment(p, this.head.color);
+        newSegment.next = this.head;
+        newSegment.prev = null;
+        if (this.head == null) {this.tail = newSegment;}
+        else {this.head.prev = newSegment;}
+        this.head = newSegment;
+        length = length+1;
+//        Segment currentSegment = this.head;
+//        Segment previousSegment = this.head.prev;
+//        Segment nextSegment = this.head.next;
+
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+
+
+    // a segment of the fruit's color is added at the end
+    public void eat(Fruit f) {
+        // each fruit bite --> caterpillar grows longer (add new segment, addLast).
+        // New segment (tail)'s element matches with food's color that it just ate.
+        // Position should be the most recent position previously occupied by caterpillar.
+        // involves public Stack<Position> positionsPreviouslyOccupied
+        
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+    // the caterpillar moves one step backwards because of sourness
+    public void eat(Pickle p) {
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+
+    // all the caterpillar's colors shuffles around
+    public void eat(Lollipop lolly) {
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+    // brain freeze!!
+    // It reverses and its (new) head turns blue
+    public void eat(IceCream gelato) {
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+    // the caterpillar embodies a slide of Swiss cheese loosing half of its segments.
+    public void eat(SwissCheese cheese) {
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+
+    public void eat(Cake cake) {
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+
+    // This nested class was declared public for testing purposes
+    public class Segment {
+        private Position position;
+        private Color color;
+        private Segment next;
+        private Segment prev;
+
+        public Segment(Position p, Color c) {
+            this.position = p;
+            this.color = c;
+        }
+
+    }
+
+
+    public String toString() {
+        Segment s = this.head;
+        String gus = "";
+        while (s!=null) {
+            String coloredPosition = GameColors.colorToANSIColor(s.color) +
+                    s.position.toString() + GameColors.colorToANSIColor(Color.WHITE);
+            gus = coloredPosition + " " + gus;
+            s = s.next;
+        }
+        return gus;
+    }
+
+}
