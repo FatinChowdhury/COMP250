@@ -230,19 +230,32 @@ public class Caterpillar {
     // the caterpillar embodies a slide of Swiss cheese loosing half of its segments.
     public void eat(SwissCheese cheese) {
         Segment currentSegment = this.head;
-        while (currentSegment.next.next!=null){
-            Segment nextSegmentToignore = currentSegment.next;
-            Segment actualNextSegment = nextSegmentToignore.next;
 
-                actualNextSegment.position = nextSegmentToignore.position;
+        int index = 0;
 
-            currentSegment.next = actualNextSegment;
+        while (currentSegment.next != null) {
 
-            currentSegment = actualNextSegment;
+            Segment segmentToTakeColorFrom = currentSegment;
+            for (int i = 0; i < index; i++) {
+                if (segmentToTakeColorFrom.next == null) {
+                    segmentToTakeColorFrom = currentSegment;
+                    break;
+                }
+                segmentToTakeColorFrom = segmentToTakeColorFrom.next;
+            }
+            currentSegment.color = segmentToTakeColorFrom.color;
+
+            if (++index >= (int) Math.ceil((double)length / 2)) {
+                Segment nextSegment = currentSegment.next;
+                positionsPreviouslyOccupied.push(nextSegment.position);
+                currentSegment.next = null;
+                this.tail = currentSegment;
+                currentSegment = nextSegment;
+            }
+            else {
+                currentSegment = currentSegment.next;
+            }
         }
-        /*
-         * TODO: ADD YOUR CODE HERE
-         */
     }
 
 
