@@ -1,0 +1,356 @@
+package assignment2;
+
+import java.awt.Color;
+import java.util.Random;
+import java.util.Stack;
+
+import assignment2.food.*;
+
+
+public class Caterpillar {
+    // All the fields have been declared public for testing purposes
+    public Segment head;
+    public Segment tail;
+    public int length;
+    public EvolutionStage stage;
+
+    public Stack<Position> positionsPreviouslyOccupied;
+    public int goal;
+    public int turnsNeededToDigest;
+
+
+    public static Random randNumGenerator = new Random(1);
+
+
+    // Creates a Caterpillar with one Segment. It is up to students to decide how to implement this.
+    public Caterpillar(Position p, Color c, int goal) {
+
+        Segment newSegment = new Segment(p,c);
+        this.head = newSegment;
+        this.tail = newSegment;
+        this.goal = goal;
+        length++;
+        if (length == goal) {
+            this.stage = EvolutionStage.BUTTERFLY;
+            return;
+        }
+        this.positionsPreviouslyOccupied = new Stack<>();
+        this.stage = EvolutionStage.FEEDING_STAGE;
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+    public EvolutionStage getEvolutionStage() {
+        return this.stage;
+    }
+
+    public Position getHeadPosition() {
+        return this.head.position;
+    }
+
+    public int getLength() {
+        return this.length;
+    }
+
+
+    // returns the color of the segment in position p. Returns null if such segment does not exist
+    public Color getSegmentColor(Position p) {
+
+        Segment currentSegment = this.head;
+        while (currentSegment != null){
+            if (currentSegment.position.equals(p)){
+                return currentSegment.color;
+            }
+            currentSegment = currentSegment.next;
+        }
+
+        return null;
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+    // shift all Segments to the previous Position while maintaining the old color
+    public void move(Position p) {
+        // check if new position is at a valid coord
+        // check if new position is alr occupied by another segment
+        // position must be at most 1, and not 2. To check this, use getDistance()
+        if (Position.getDistance(this.head.position, p) > 1) {
+            throw new IllegalArgumentException();
+        }
+        else {
+            Segment currentSegment = this.head;
+            // initialize the new Position (that the caterpillar
+            while (currentSegment != null) {
+                // update the position
+                if (currentSegment.position.equals(p)) {
+                    this.stage = EvolutionStage.ENTANGLED;
+                    return;
+                }
+                currentSegment = currentSegment.next;
+            }
+
+
+            currentSegment = this.head; // go back to head
+
+            while (currentSegment!=null){
+
+                // updating the position
+                Position previousPositionOfCurrentSegment = currentSegment.position;
+                currentSegment.position = p;
+                // keep track of the previous position
+                p = previousPositionOfCurrentSegment; // orange taking red's initial position
+
+                currentSegment = currentSegment.next;
+
+            }
+            positionsPreviouslyOccupied.push(p);
+
+            /*
+             * TODO: ADD YOUR CODE HERE
+             */
+        }
+    }
+
+
+    // a segment of the fruit's color is added at the end
+    public void eat(Fruit f) {
+        // each fruit bite --> caterpillar grows longer (add new segment, addLast).
+        // New segment (tail)'s element matches with food's color that it just ate.
+        // Position should be the most recent position previously occupied by caterpillar.
+        // involves public Stack<Position> positionsPreviouslyOccupied
+        if (positionsPreviouslyOccupied.isEmpty() && stage != EvolutionStage.FEEDING_STAGE) {
+            return;
+        }
+
+        Position lastPosition = positionsPreviouslyOccupied.pop();
+
+        Segment newSegment = new Segment(lastPosition, f.getColor());
+
+        // add new segment at the end of caterpillar (tail)
+        tail.next = newSegment;
+        tail = newSegment;
+        length++;
+        if (length == goal) {
+            this.stage = EvolutionStage.BUTTERFLY;
+            return;
+        }
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+    public static void main(String[] args){
+        Position startingPoint = new Position(3, 2);
+        Caterpillar gus = new Caterpillar(startingPoint, GameColors.GREEN, 10);
+        System.out.println("1) Gus: " + gus);
+        System.out.println("Stack of previously occupied positions: " + gus.positionsPreviouslyOccupied);
+        gus.move(new Position(3,1));
+        gus.eat(new Fruit(GameColors.RED));
+        gus.move(new Position(2,1));
+        gus.move(new Position(1,1));
+        gus.eat(new Fruit(GameColors.YELLOW));
+        System.out.println("\n2) Gus: " + gus);
+        System.out.println("Stack of previously occupied positions: " + gus.positionsPreviouslyOccupied);
+    }
+    // the caterpillar moves one step backwards because of sourness
+    public void eat(Pickle p) {
+
+        if (positionsPreviouslyOccupied.isEmpty() && stage != EvolutionStage.FEEDING_STAGE)
+            return;
+
+        Segment currentSegment = this.head;
+        while(currentSegment!= null){
+            // getting next segment
+            Segment segmentAfter = currentSegment.next;
+
+            if (segmentAfter!=null){
+                currentSegment.position = segmentAfter.position;
+            } else{
+                currentSegment.position = positionsPreviouslyOccupied.pop();
+            }
+            currentSegment = currentSegment.next;
+        }
+
+
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+
+    // all the caterpillar's colors shuffles around
+    public void eat(Lollipop lolly) {
+        if (stage!=EvolutionStage.FEEDING_STAGE)
+            return;
+        //copy all colors of all segments into an array
+        Color[] colors = new Color[length];
+        Segment currentSegment = this.head;
+        int i = 0;
+        while (currentSegment!=null){
+            colors[i] = currentSegment.color;
+            currentSegment = currentSegment.next;
+            i++;
+        }
+
+        // shuffle the colors using Fisher-Yates shuffle
+        for (int j = colors.length - 1; j > 0; j--){
+            int randomIndex = randNumGenerator.nextInt(j+1);
+            Color temp = colors[randomIndex];
+            colors[randomIndex] = colors[j];
+            colors[j] = temp;
+        }
+
+        // update the colors of the segments
+        currentSegment = this.head;
+        i = 0;
+        while (currentSegment!=null){
+            currentSegment.color = colors[i];
+            currentSegment = currentSegment.next;
+            i++;
+        }
+
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+    // brain freeze!!
+    // It reverses and its (new) head turns blue
+    public void eat(IceCream gelato) {
+        if (stage!=EvolutionStage.FEEDING_STAGE)
+            return;
+        Segment currentSegment = this.head;
+        Segment previousSegment = null;
+        while (currentSegment!=null){
+            Segment nextSegment = currentSegment.next;
+            currentSegment.next = previousSegment;
+            previousSegment = currentSegment;
+            currentSegment = nextSegment;
+        }
+        this.tail = this.head;
+        this.head = previousSegment;
+
+        this.head.color = GameColors.BLUE;
+        this.positionsPreviouslyOccupied.clear();
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+    }
+
+    // the caterpillar embodies a slide of Swiss cheese loosing half of its segments.
+    public void eat(SwissCheese cheese) {
+        if (stage!=EvolutionStage.FEEDING_STAGE)
+            return;
+        Segment currentSegment = this.head;
+
+        int index = 0;
+
+        while (currentSegment.next != null) {
+
+            Segment segmentToTakeColorFrom = currentSegment;
+            for (int i = 0; i < index; i++) {
+                if (segmentToTakeColorFrom.next == null) {
+                    segmentToTakeColorFrom = currentSegment;
+                    break;
+                }
+                segmentToTakeColorFrom = segmentToTakeColorFrom.next;
+            }
+            currentSegment.color = segmentToTakeColorFrom.color;
+
+            if (++index >= (int) Math.ceil((double)length / 2)) {
+                Segment nextSegment = currentSegment.next;
+                positionsPreviouslyOccupied.push(nextSegment.position);
+                currentSegment.next = null;
+                this.tail = currentSegment;
+                currentSegment = nextSegment;
+            }
+            else {
+                currentSegment = currentSegment.next;
+            }
+        }
+    }
+
+
+    public void eat(Cake cake) {
+        if (stage!=EvolutionStage.FEEDING_STAGE)
+            return;
+        this.stage = EvolutionStage.GROWING_STAGE;
+        Position mostRecentTrail = positionsPreviouslyOccupied.peek();
+        int cakeEnergy = cake.getEnergyProvided();
+
+        int numberOfSegmentsToGrow = Math.min(cakeEnergy, positionsPreviouslyOccupied.size());
+        if (cakeEnergy == positionsPreviouslyOccupied.size()){
+            return;
+        }
+        for (int i = 0; i < numberOfSegmentsToGrow; i++) {
+            if (!positionsPreviouslyOccupied.isEmpty()) {
+                Position positionToGrow = positionsPreviouslyOccupied.pop();
+                if (!isPositionOccupied(positionToGrow)) {
+                    Segment newSegment = new Segment(positionToGrow, this.head.color);
+                    this.tail.next = newSegment;
+                    this.tail = newSegment;
+                    length++;
+                    if (length == goal) {
+                        this.stage = EvolutionStage.BUTTERFLY;
+                        return;
+                    }
+                }
+            }
+        }
+        // if cakeEnergy not digested, store it in int turnsNeededToDigest
+        if (cakeEnergy > numberOfSegmentsToGrow) {
+            turnsNeededToDigest = cakeEnergy - numberOfSegmentsToGrow;
+        }
+        else {
+            turnsNeededToDigest = 0;
+        }
+
+
+        /*
+         * TODO: ADD YOUR CODE HERE
+         */
+
+    }
+    private boolean isPositionOccupied(Position positionToGrow) {
+        Segment currentSegment = this.head;
+        while (currentSegment != null) {
+            if (currentSegment.position.equals(positionToGrow)) {
+                return true;
+            }
+            currentSegment = currentSegment.next;
+        }
+        return false;
+
+
+    }
+
+
+    // This nested class was declared public for testing purposes
+    public class Segment {
+        private Position position;
+        private Color color;
+        private Segment next;
+
+        public Segment(Position p, Color c) {
+            this.position = p;
+            this.color = c;
+        }
+
+    }
+
+
+    public String toString() {
+        Segment s = this.head;
+        String gus = "";
+        while (s!=null) {
+            String coloredPosition = GameColors.colorToANSIColor(s.color) +
+                    s.position.toString() + GameColors.colorToANSIColor(Color.WHITE);
+            gus = coloredPosition + " " + gus;
+            s = s.next;
+        }
+        return gus;
+    }
+
+}
+
