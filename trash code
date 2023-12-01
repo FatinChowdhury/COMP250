@@ -1,0 +1,80 @@
+DTNode fillDTNode(ArrayList<Datum> datalist) {
+			//ADD CODE HERE
+			
+			return this; // dummy code
+		}
+
+		/*
+		 * Data: data set (training)
+			Result: the root node of a decision tree
+			MAKE DECISION TREE NODE(data)
+			if the labelled data set has at least k data items (see below) then
+				if all the data items have the same label then
+					create a leaf node with that class label and return it;
+				else
+					create a “best” attribute test question; (see details later)
+					create a new node and store the attribute test in that node, namely attribute and threshold;
+					split the set of data items into two subsets, data1 and data2, according to the answers to the test
+					question;
+					newNode.child1 = MAKE DECISION TREE NODE(data1)
+					newNode.child2 = MAKE DECISION TREE NODE(data2)
+					return newNode
+				end
+			else
+				create a leaf node with label equal to the majority of labels and return it;
+			end
+
+
+			Note:
+				- each internal node contains an attribute test
+				- each child of internal node represents an outcome of the attribute test
+				- answers to attribute test questions are true or false
+				- each leaf contains a label
+
+			
+		 */
+		// private DTNode fillDTNode(ArrayList<Datum> trainData){
+			// if (trainData.size() >= minSizeDatalist){
+			// 	// if all the data have the same label
+			// 	//		create a leaf node with that same class label and return it
+			// 	for (Datum datum : trainData){
+			// 		if (datum.y == trainData.get(0).y){
+			// 			leaf = true;
+			// 			label = datum.y;
+			// 			return this;
+			// 		}
+			// 		else{
+			// 			leaf = false;
+			// 			// create best attribute question, meaning: 
+			// 			// if i choose an attribute (x_1 or x_2) to split upon
+			// 			// and if i choose a threshold value of this x_i to split upon
+			// 			// then what is that attribute x_i and the threshold value, that will give me the least entropy upon splitting?
+
+						
+			// 			// create a new node and store the attribute test in that node, namely attribute and threshold
+			// 			DTNode newNode = new DTNode();
+			// 			// newNode.attribute = someAttribute;
+			// 			// newNode.threshold = someThreshold;
+
+
+			// 			// split the set of data items into two subsets, data1 and data2, according to the answers to the test question
+			// 			// for the split, can use void splitTrainTestData(double trainfraction)?
+
+			// 			ArrayList<Datum> data1 = new ArrayList<Datum>();
+			// 			ArrayList<Datum> data2 = new ArrayList<Datum>();
+						
+			// 			for (Datum d : trainData){
+			// 				if (d.x[newNode.attribute] < newNode.threshold){
+			// 					data1.add(d);
+			// 				}
+			// 				else{
+			// 					data2.add(d);
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// }
+			// leaf = true;
+			// label = findMajority(trainData);
+			// return this;
+		// }
