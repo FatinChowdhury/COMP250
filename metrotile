@@ -1,0 +1,5 @@
+        if (node != null && node.type == TileType.Metro) {
+            int manhattanDistance = Math.abs(this.xCoord - node.xCoord) + Math.abs(this.yCoord - node.yCoord);
+            metroTimeCost = manhattanDistance * metroCommuteFactor;
+            metroDistanceCost = manhattanDistance / metroCommuteFactor;
+        }
