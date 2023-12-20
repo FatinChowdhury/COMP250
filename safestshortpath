@@ -1,0 +1,61 @@
+package finalproject;
+
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+import finalproject.system.Tile;
+
+public class SafestShortestPath extends ShortestPath {
+	public int health;
+	public Graph costGraph;
+	public Graph damageGraph;
+	public Graph aggregatedGraph;
+
+	//TODO level 8: finish class for finding the safest shortest path with given health constraint
+	public SafestShortestPath(Tile start, int health) {
+		super(start);
+		this.health = health;
+	}
+
+	
+public void generateGraph() {
+    // Initialize costGraph with distance cost
+    costGraph = new Graph(new ArrayList<>());
+    ArrayList<Tile> reachableTiles = GraphTraversal.DFS(source);
+    for (Tile tile : reachableTiles) {
+        costGraph.tiles.add(tile);
+        for (Tile neighbor : tile.neighbors) {
+            if (neighbor.isWalkable()) {
+                double weight = costGraph.calculateEdgeWeightDistanceCost(tile, neighbor);
+                costGraph.addEdge(tile, neighbor, weight);
+            }
+        }
+    }
+
+    // Initialize damageGraph with damage cost
+    damageGraph = new Graph(new ArrayList<>());
+    for (Tile tile : reachableTiles) {
+        damageGraph.tiles.add(tile);
+        for (Tile neighbor : tile.neighbors) {
+            if (neighbor.isWalkable()) {
+                double weight = neighbor.damageCost;  // Use damage cost for weight
+                damageGraph.addEdge(tile, neighbor, weight);
+            }
+        }
+    }
+
+    // Initialize aggregatedGraph with damage cost
+    aggregatedGraph = new Graph(new ArrayList<>());
+    for (Tile tile : reachableTiles) {
+        aggregatedGraph.tiles.add(tile);
+        for (Tile neighbor : tile.neighbors) {
+            if (neighbor.isWalkable()) {
+                double weight = neighbor.damageCost;  // Use damage cost for weight
+                aggregatedGraph.addEdge(tile, neighbor, weight);
+            }
+        }
+    }
+}
+
+}
